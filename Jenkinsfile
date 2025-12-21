@@ -5,45 +5,61 @@ pipeline {
         nodejs 'node18'
     }
 
-    stages {
+    environment {
+        IMAGE_NAME = 'angular-app'
+        CONTAINER_NAME = 'angular-app'
+    }
 
-        stage('Checkout Code') {
-            steps {
-                git branch: 'main', url: 'https://github.com/your-repo/angular-app.git'
-            }
-        }
+    stages {
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                sh '''
+                  npm install
+                '''
             }
         }
 
-        stage('Build Angular') {
+        stage('Build Angular (Production)') {
             steps {
-                sh 'npm run build -- --configuration=production'
+                sh '''
+                  npm run build -- --configuration=production
+                '''
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t angular-app:latest .'
+                sh '''
+                  docker build -t $IMAGE_NAME:latest .
+                '''
             }
         }
 
-        stage('Deploy Angular') {
+        stage('Deploy Angular Container') {
             steps {
                 sh '''
-                docker stop angular-app || true
-                docker rm angular-app || true
+                  docker stop $CONTAINER_NAME || true
+                  docker rm $CONTAINER_NAME || true
 
-                docker run -d \
-                  --name angular-app \
-                  --network app-network \
-                  -p 80:80 \
-                  angular-app:latest
+                  docker run -d \
+                    --name $CONTAINER_NAME \
+                    --restart unless-stopped \
+                    -p 80:80 \
+                    $IMAGE_NAME:latest
                 '''
             }
         }
     }
+
+    post {
+        success {
+            echo 'Angular deployment completed successfully'
+        }
+        failure {
+            echo 'Angular deployment failed'
+        }
+    }
 }
+
+
