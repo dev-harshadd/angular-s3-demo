@@ -1,0 +1,206 @@
+<div class="container-fluid bg-light min-vh-100 py-3">
+   <div *ngIf="!drDoc" class="text-center py-5">
+      <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="text-muted">Loading document details...</p>
+    </div>
+  <div class="container" *ngIf="drDoc">
+
+      
+
+    <!-- ================= HEADER ================= -->
+    <div class="row mb-3">
+      <div class="col-12">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-2">
+            <li class="breadcrumb-item">
+              <a href="#" class="text-decoration-none">DR Management</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="#" class="text-decoration-none">Documents</a>
+            </li>
+            <li class="breadcrumb-item active text-truncate" style="max-width: 240px;">
+              {{ drDoc.title }}
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h4 class="fw-semibold text-dark mb-1">
+              {{ drDoc.title }}
+            </h4>
+            <p class="text-muted mb-1" style="font-size: 0.85rem;">
+              Disaster Recovery Runbook
+            </p>
+            <div class="d-flex align-items-center gap-3 text-muted" style="font-size: 0.8rem;">
+              <span>
+                Created: {{ drDoc.createdAt | date:'MMM dd, yyyy' }}
+              </span>
+              <span class="border-start ps-3">
+                Updated: {{ drDoc.updatedAt | date:'MMM dd, yyyy' || 'N/A' }}
+              </span>
+              <span class="border-start ps-3">
+                Doc ID: {{ drDoc.id }}
+              </span>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline-secondary btn-sm" onclick="window.print()">
+              Print
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <div class="row">
+
+      <!-- ===== LEFT CONTENT ===== -->
+      <div class="col-lg-9">
+
+        <!-- Component -->
+        <div class="card border-0 shadow-sm mb-3">
+          <div class="card-body py-2">
+            <div class="d-flex align-items-center gap-3">
+              <span class="text-muted text-uppercase fw-semibold" style="font-size: 0.7rem;">
+                Component
+              </span>
+              <span
+                class="badge text-uppercase fw-semibold"
+                [ngClass]="{
+                  'bg-primary': drDoc.component === 'EC2',
+                  'bg-success': drDoc.component === 'ALB',
+                  'bg-info': drDoc.component === 'RDS',
+                  'bg-warning text-dark': drDoc.component === 'APP'
+                }"
+                style="padding: 0.35rem 0.75rem; font-size: 0.75rem;"
+              >
+                {{ drDoc.component }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detection -->
+        <div class="card border-0 shadow-sm mb-3">
+          <div class="card-header bg-white border-bottom py-2">
+            <h6 class="mb-0 fw-semibold">Detection</h6>
+          </div>
+          <div class="card-body">
+            <div *ngIf="drDoc.detection" class="content-text">
+              {{ drDoc.detection }}
+            </div>
+            <div *ngIf="!drDoc.detection" class="text-muted fst-italic">
+              No detection details documented
+            </div>
+          </div>
+        </div>
+
+        <!-- Immediate Action -->
+        <div class="card border-0 shadow-sm mb-3 border-start border-danger border-3">
+          <div class="card-header bg-white border-bottom py-2">
+            <h6 class="mb-0 fw-semibold text-danger">Immediate Action</h6>
+          </div>
+          <div class="card-body">
+            <div *ngIf="drDoc.immediateAction" class="content-text">
+              {{ drDoc.immediateAction }}
+            </div>
+            <div *ngIf="!drDoc.immediateAction" class="text-muted fst-italic">
+              No immediate action documented
+            </div>
+          </div>
+        </div>
+
+        <!-- Recovery Steps -->
+        <div class="card border-0 shadow-sm mb-3 border-start border-success border-3">
+          <div class="card-header bg-white border-bottom py-2">
+            <h6 class="mb-0 fw-semibold text-success">Recovery Steps</h6>
+          </div>
+          <div class="card-body">
+            <div *ngIf="drDoc.recoverySteps" class="content-text">
+              {{ drDoc.recoverySteps }}
+            </div>
+            <div *ngIf="!drDoc.recoverySteps" class="text-muted fst-italic">
+              No recovery steps documented
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="card border-0 shadow-sm mb-3">
+          <div class="card-header bg-white border-bottom py-2">
+            <h6 class="mb-0 fw-semibold">Notes</h6>
+          </div>
+          <div class="card-body">
+            <div *ngIf="drDoc.notes" class="content-text">
+              {{ drDoc.notes }}
+            </div>
+            <div *ngIf="!drDoc.notes" class="text-muted fst-italic">
+              No additional notes
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ===== RIGHT SIDEBAR ===== -->
+      <div class="col-lg-3">
+
+        <div class="card border-0 shadow-sm mb-3">
+          <div class="card-header bg-white border-bottom py-2">
+            <h6 class="mb-0 text-secondary fw-medium">Document Info</h6>
+          </div>
+          <div class="card-body" style="font-size: 0.85rem;">
+            <div class="mb-2">
+              <span class="text-muted">Status</span><br />
+              <span class="badge bg-success-subtle text-success border border-success">
+                Active
+              </span>
+            </div>
+            <hr />
+            <div class="mb-2">
+              <span class="text-muted">Created</span><br />
+              {{ drDoc.createdAt | date:'MMM dd, yyyy h:mm a' }}
+            </div>
+            <hr />
+            <div>
+              <span class="text-muted">Last Modified</span><br />
+              {{ drDoc.updatedAt | date:'MMM dd, yyyy h:mm a' || 'N/A' }}
+            </div>
+          </div>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-white border-bottom py-2">
+            <h6 class="mb-0 text-secondary fw-medium">Quick Actions</h6>
+          </div>
+          <div class="card-body">
+            <div class="d-grid gap-2">
+              <button class="btn btn-outline-primary btn-sm">Export PDF</button>
+              <button class="btn btn-outline-secondary btn-sm">Share</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Back -->
+    <div class="row mt-3">
+      <div class="col-12">
+        <button class="btn btn-outline-secondary btn-sm" (click)="goBack()">
+          ← Back to List
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

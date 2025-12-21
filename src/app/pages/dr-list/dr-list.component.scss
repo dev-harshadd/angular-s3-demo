@@ -1,0 +1,46 @@
+/* Professional table styling */
+  .table > :not(caption) > * > * {
+    padding: 1rem 0.75rem;
+  }
+
+  .table tbody tr {
+    transition: all 0.2s ease;
+  }
+
+  .table tbody tr:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+  }
+
+  .btn-group-sm > .btn {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.85rem;
+  }
+
+  .badge {
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  .card {
+    border-radius: 8px;
+  }
+
+  .input-group-text {
+    border-right: 0;
+  }
+
+  .form-control:focus {
+    border-color: #dee2e6;
+    box-shadow: none;
+  }
+
+  .breadcrumb-item + .breadcrumb-item::before {
+    content: "›";
+  }
+
+  /* Statistics card animations */
+  .card:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+  }

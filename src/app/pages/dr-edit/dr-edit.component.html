@@ -1,0 +1,228 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      
+      <!-- Header Section -->
+      <div class="mb-4">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div>
+            <h2 class="text-warning fw-bold mb-1">
+              <i class="bi bi-pencil-square me-2"></i>Edit DR Document
+            </h2>
+            <p class="text-muted mb-0">Update disaster recovery documentation</p>
+          </div>
+        </div>
+        <hr class="border-warning border-3 opacity-75">
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="!drDoc" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 text-muted">Loading document...</p>
+      </div>
+
+      <!-- Form Card -->
+      <div *ngIf="drDoc" class="card shadow-lg border-0">
+        <div class="card-header bg-warning text-dark py-3">
+          <h5 class="mb-0"><i class="bi bi-clipboard-data me-2"></i>Document Information</h5>
+        </div>
+        
+        <div class="card-body p-4">
+          <form (ngSubmit)="submit()">
+            
+            <!-- Title -->
+          <div class="mb-3">
+  <label class="form-label fw-medium">
+    Title <span class="text-danger">*</span>
+  </label>
+
+  <input 
+    type="text"
+    class="form-control"
+    [(ngModel)]="drDoc.title" 
+    name="title" 
+    placeholder= "EC2 disk full during peak traffic"
+    required 
+  />
+
+  <div class="form-text">
+    Short, descriptive title for the DR runbook
+  </div>
+</div>
+
+
+            <!-- Component -->
+            <div class="mb-3">
+  <label class="form-label fw-medium">
+    Component <span class="text-danger">*</span>
+  </label>
+
+  <select 
+    class="form-select"
+    [(ngModel)]="drDoc.component" 
+    name="component" 
+    required
+  >
+    <option value="" disabled>-- Select Component --</option>
+
+    <!-- Compute -->
+    <option value="EC2">EC2</option>
+    <option value="ECS">ECS</option>
+    <option value="EKS">EKS</option>
+    <option value="LAMBDA">Lambda</option>
+
+    <!-- Networking -->
+    <option value="ALB">Application Load Balancer</option>
+    <option value="NLB">Network Load Balancer</option>
+    <option value="VPC">VPC / Networking</option>
+
+    <!-- Database -->
+    <option value="RDS">RDS</option>
+    <option value="AURORA">Aurora</option>
+    <option value="DYNAMODB">DynamoDB</option>
+    <option value="ELASTICACHE">ElastiCache</option>
+
+    <!-- Storage -->
+    <option value="S3">S3</option>
+    <option value="EBS">EBS</option>
+    <option value="EFS">EFS</option>
+
+    <!-- Application / Platform -->
+    <option value="APP">Application</option>
+    <option value="API">API Gateway</option>
+    <option value="CLOUDFRONT">CloudFront</option>
+
+    <!-- Observability / Security -->
+    <option value="CLOUDWATCH">CloudWatch</option>
+    <option value="IAM">IAM</option>
+    <option value="WAF">WAF</option>
+  </select>
+
+  <div class="form-text">
+    AWS service or layer impacted during the incident
+  </div>
+</div>
+
+
+            <!-- Detection -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold">
+                <i class="bi bi-eye text-info me-2"></i>Detection Methods
+              </label>
+              <textarea 
+                class="form-control"
+                [(ngModel)]="drDoc.detection" 
+                name="detection"
+                rows="4"
+                placeholder="Describe detection methods, monitoring alerts, symptoms, and early warning signs..."
+              ></textarea>
+              <div class="form-text">
+                <i class="bi bi-info-circle me-1"></i>
+                Document how issues are identified (CloudWatch alarms, logs, metrics)
+              </div>
+            </div>
+
+            <!-- Immediate Action -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold">
+                <i class="bi bi-exclamation-triangle text-danger me-2"></i>Immediate Actions
+              </label>
+              <textarea 
+                class="form-control"
+                [(ngModel)]="drDoc.immediateAction" 
+                name="immediateAction"
+                rows="4"
+                placeholder="List critical first-response actions to stabilize the situation..."
+              ></textarea>
+              <div class="form-text">
+                <i class="bi bi-info-circle me-1"></i>
+                Time-sensitive actions to prevent escalation
+              </div>
+            </div>
+
+            <!-- Recovery Steps -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold">
+                <i class="bi bi-arrow-clockwise text-success me-2"></i>Recovery Procedures
+              </label>
+              <textarea 
+                class="form-control"
+                [(ngModel)]="drDoc.recoverySteps" 
+                name="recoverySteps"
+                rows="5"
+                placeholder="Provide detailed step-by-step recovery procedures with commands, scripts, and validation steps..."
+              ></textarea>
+              <div class="form-text">
+                <i class="bi bi-info-circle me-1"></i>
+                Comprehensive recovery process with verification checkpoints
+              </div>
+            </div>
+
+            <!-- Notes -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold">
+                <i class="bi bi-card-text text-info me-2"></i>Additional Notes
+              </label>
+              <textarea 
+                class="form-control"
+                [(ngModel)]="drDoc.notes" 
+                name="notes"
+                rows="3"
+                placeholder="Add supplementary information, contact details, references, or lessons learned..."
+              ></textarea>
+              <div class="form-text">
+                <i class="bi bi-info-circle me-1"></i>
+                Optional: Include related documentation links or dependencies
+              </div>
+            </div>
+
+            <!-- Form Actions -->
+            <hr class="my-3">
+
+<div class="d-flex justify-content-between align-items-center">
+  <button 
+    type="button" 
+    class="btn btn-outline-secondary btn-sm"
+    (click)="cancel()"
+  >
+    Cancel
+  </button>
+
+  <button 
+    type="submit" 
+    class="btn btn-primary btn-sm"
+  >
+    Update
+  </button>
+</div>
+
+
+          </form>
+        </div>
+
+        <div class="card-footer bg-light text-muted py-3">
+          <small>
+            <i class="bi bi-clock-history me-1"></i>
+            Last modified: <span class="fw-semibold">{{ drDoc.updatedAt || 'N/A' }}</span>
+          </small>
+        </div>
+      </div>
+
+      <!-- Help Section -->
+      <div *ngIf="drDoc" class="alert alert-warning mt-4 border-0 shadow-sm" role="alert">
+        <h6 class="alert-heading">
+          <i class="bi bi-exclamation-triangle me-2"></i>Important Reminders
+        </h6>
+        <ul class="mb-0 small">
+          <li>Review all sections carefully before saving changes</li>
+          <li>Ensure procedures are tested and validated</li>
+          <li>Notify relevant team members of significant updates</li>
+          <li>Previous versions are maintained for audit purposes</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
