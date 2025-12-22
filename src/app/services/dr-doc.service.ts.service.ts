@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DrDocument } from '../models/dr-document.model';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,10 @@ export class DrDocService {
   getByComponent(selectedComponent: any) {
     throw new Error('Method not implemented.');
   }
+    private baseUrl = environment.apiBaseUrl + '/api/dr';
 
-  private baseUrl = 'http://localhost:8082/api/dr';
+
+  // private baseUrl = 'http://localhost:8082/api/dr';
 
   constructor(private http: HttpClient) {}
 
