@@ -11,7 +11,7 @@ export class DrDocService {
   getByComponent(selectedComponent: any) {
     throw new Error('Method not implemented.');
   }
-    private baseUrl = environment.apiBaseUrl + '/api/dr';
+    private baseUrl = environment.apiBaseUrl + '/dr';
 
 
   // private baseUrl = 'http://localhost:8082/api/dr';
